@@ -22,7 +22,7 @@ export default defineEventHandler(async (event) => {
     
     // Only store referer if it's not the homepage or another public route
     // This allows the configured postLoginRedirectURL to take effect when logging in from public pages
-    const publicRoutes = ['/', '/auth/callback', '/debug-auth', '/blog', '/help', '/legal']
+    const publicRoutes = ['/', '/auth/callback', '/blog', '/help', '/legal']
     const isPublicRoute = publicRoutes.some(route => 
       redirectPath === route || redirectPath.startsWith(`${route}/`) || redirectPath.startsWith(`${route}?`)
     )
