@@ -1,3 +1,10 @@
+## [1.0.4](https://github.com/Habityzer/nuxt-kinde-auth/compare/v1.0.3...v1.0.4) (2025-10-10)
+
+
+### Bug Fixes
+
+* **kinde:** enhance post-login redirect logic to exclude public routes ([1a2417e](https://github.com/Habityzer/nuxt-kinde-auth/commit/1a2417ea1886b4873170b572b01f57da82721f28))
+
 ## [1.0.3](https://github.com/Habityzer/nuxt-kinde-auth/compare/v1.0.2...v1.0.3) (2025-10-10)
 
 
