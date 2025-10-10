@@ -20,24 +20,12 @@ function getKindeClient(event: H3Event) {
 }
 
 export default defineEventHandler(async (event) => {
-  // Only log for API routes to avoid spam
-  if (event.path?.startsWith('/api/')) {
-    console.log('🔶 [KINDE MIDDLEWARE] Processing:', event.path)
-  }
-  
   const sessionManager = await createSessionManager(event)
   const kindeClient = getKindeClient(event)
 
-  // Attach both client and sessionManager to the event context
   event.context.kinde = {
     client: kindeClient,
     sessionManager
-  }
-  
-  if (event.path?.startsWith('/api/kinde')) {
-    console.log('🔶 [KINDE MIDDLEWARE] Kinde context attached for:', event.path)
-    console.log('🔶 [KINDE MIDDLEWARE] Client exists:', !!kindeClient)
-    console.log('🔶 [KINDE MIDDLEWARE] SessionManager exists:', !!sessionManager)
   }
 })
 
@@ -56,15 +44,12 @@ async function createSessionManager(event: H3Event) {
         // First check if we set this cookie during the current request
         if (cookieCache[itemKey] !== undefined) {
           value = cookieCache[itemKey]
-          console.log(`🔶 [SESSION] Reading ${itemKey} from cache:`, value ? 'found' : 'not found')
         } else {
           // Otherwise read from request cookie
           value = getCookie(event, itemKey)
-          console.log(`🔶 [SESSION] Reading ${itemKey} from cookie:`, value ? 'found' : 'not found')
         }
       } else {
         value = memorySession[itemKey]
-        console.log(`🔶 [SESSION] Reading ${itemKey} from memory:`, value ? 'found' : 'not found')
       }
       return value as T | undefined
     },
@@ -84,7 +69,6 @@ async function createSessionManager(event: H3Event) {
           domain: undefined  // Don't set domain for localhost
         }
 
-        console.log(`🔶 [SESSION] Setting cookie: ${itemKey}`)
         setCookie(event, itemKey, stringValue, cookieOptions)
       } else {
         memorySession[itemKey] = itemValue
