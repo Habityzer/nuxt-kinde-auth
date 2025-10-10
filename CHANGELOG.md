@@ -1,3 +1,10 @@
+## [1.0.7](https://github.com/Habityzer/nuxt-kinde-auth/compare/v1.0.6...v1.0.7) (2025-10-10)
+
+
+### Bug Fixes
+
+* add missing Nuxt auto-import declarations in client plugins and middleware ([7e7e4cb](https://github.com/Habityzer/nuxt-kinde-auth/commit/7e7e4cb80648d886b60020923233e01b74adbf86))
+
 ## [1.0.6](https://github.com/Habityzer/nuxt-kinde-auth/compare/v1.0.5...v1.0.6) (2025-10-10)
 
 
