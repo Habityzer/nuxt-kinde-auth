@@ -459,7 +459,7 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 ## Support
 
 For issues and questions:
-- [GitHub Issues](https://github.com/yourusername/nuxt-kinde-auth/issues)
+- [GitHub Issues](https://github.com/Habityzer/nuxt-kinde-auth/issues)
 - [Kinde Documentation](https://kinde.com/docs/)
 
 ---

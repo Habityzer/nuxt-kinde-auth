@@ -1,0 +1,54 @@
+# Source files (only publish dist)
+src/
+tests/
+
+# Development files
+*.log
+*.lock
+.DS_Store
+.vscode/
+.idea/
+.nuxt/
+.output/
+
+# Config files
+tsconfig.json
+vitest.config.ts
+eslint.config.js
+.releaserc.json
+
+# Documentation (keep in package)
+!README.md
+!LICENSE
+!CHANGELOG.md
+
+# Git files
+.git/
+.gitignore
+
+# CI/CD
+.github/
+
+# Development dependencies
+node_modules/
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+
+# Build artifacts
+*.tsbuildinfo
+
+# Misc
+.env
+.env.*
+!.env.example
+coverage/
+.nyc_output/
+
+# Documentation files (optional - can be removed if you want to include them)
+SETUP_SUMMARY.md
+RELEASING.md
+RELEASE_QUICKSTART.md
+MIGRATION_SUMMARY.md
+EXTRACTION_SUMMARY.md
+
