@@ -17,7 +17,10 @@ import type {
 // Extend event context for Kinde
 declare module 'h3' {
   interface H3EventContext {
-    kinde?: any
+    kinde?: {
+      client: any
+      sessionManager: any
+    }
   }
 }
 

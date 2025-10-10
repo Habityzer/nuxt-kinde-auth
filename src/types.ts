@@ -105,10 +105,10 @@ export interface ModuleOptions {
 
 export interface KindeUser {
   id: string
-  email?: string
-  given_name?: string
-  family_name?: string
-  picture?: string
+  email?: string | null | undefined
+  given_name?: string | null | undefined
+  family_name?: string | null | undefined
+  picture?: string | null | undefined
   [key: string]: unknown
 }
 

@@ -33,8 +33,7 @@ export const useKindeAuth = () => {
     if (import.meta.client) {
       window.location.href = '/api/kinde/login'
     } else {
-      // Server-side: use navigateTo (imported at runtime)
-      const { navigateTo } = await import('#app')
+      // Server-side: use navigateTo (available globally)
       await navigateTo('/api/kinde/login', { external: true })
     }
   }

@@ -1,9 +1,9 @@
 export interface KindeUser {
   id: string
-  email?: string
-  given_name?: string
-  family_name?: string
-  picture?: string
+  email?: string | null
+  given_name?: string | null
+  family_name?: string | null
+  picture?: string | null
   [key: string]: unknown
 }
 
@@ -46,7 +46,7 @@ interface KindeClient {
 declare module 'h3' {
   interface H3EventContext {
     kinde?: {
-      client: KindeClient
+      client: any  // Kinde SDK client type
       sessionManager: SessionManager
     }
   }

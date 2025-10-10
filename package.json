@@ -20,10 +20,12 @@
     "prepack": "nuxt-module-build build",
     "dev:prepare": "nuxt-module-build build --stub",
     "build": "nuxt-module-build build",
-    "release": "npm run prepack && npm publish",
+    "typecheck": "nuxi typecheck",
     "lint": "eslint .",
     "test": "vitest run",
-    "test:watch": "vitest watch"
+    "test:watch": "vitest watch",
+    "prepublishOnly": "pnpm build && pnpm test",
+    "release": "pnpm build && pnpm test && HUSKY=0 semantic-release"
   },
   "dependencies": {
     "@kinde-oss/kinde-typescript-sdk": "^2.13.0",
@@ -35,10 +37,16 @@
     "@nuxt/eslint-config": "^0.5.7",
     "@nuxt/module-builder": "^0.8.4",
     "@nuxt/schema": "^4.1.3",
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/commit-analyzer": "^13.0.1",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/release-notes-generator": "^14.1.0",
     "@types/node": "^22.10.0",
+    "conventional-changelog-conventionalcommits": "^9.1.0",
     "eslint": "^9.37.0",
     "h3": "^1.13.0",
     "nuxt": "^4.1.3",
+    "semantic-release": "^24.2.9",
     "typescript": "^5.9.3",
     "unbuild": "^2.0.0",
     "vitest": "^3.2.4",
@@ -56,10 +64,19 @@
     "oauth",
     "auth"
   ],
-  "author": "",
+  "author": "Vazgen Manukyan",
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "git+https://github.com/Habityzer/nuxt-kinde-auth.git"
+  },
+  "homepage": "https://github.com/Habityzer/nuxt-kinde-auth#readme",
+  "bugs": {
+    "url": "https://github.com/Habityzer/nuxt-kinde-auth/issues"
+  },
+  "packageManager": "pnpm@10.12.4",
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
   }
 }
 
