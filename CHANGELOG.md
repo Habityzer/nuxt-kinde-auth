@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/Habityzer/nuxt-kinde-auth/compare/v1.0.0...v1.0.1) (2025-10-10)
+
+
+### Bug Fixes
+
+* **useKindeAuth:** improve cookie authentication checks and error handling ([01b38db](https://github.com/Habityzer/nuxt-kinde-auth/commit/01b38db63b9826bb399af408873e5603d0f00192))
+
 # 1.0.0 (2025-10-10)
 
 
