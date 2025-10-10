@@ -1,5 +1,6 @@
 import { defineEventHandler, getCookie, setCookie, type H3Event } from 'h3'
 import { createKindeServerClient, GrantType } from '@kinde-oss/kinde-typescript-sdk'
+import { useRuntimeConfig } from '#imports'
 
 // Lazy-load Kinde client singleton
 let _kindeClient: ReturnType<typeof createKindeServerClient> | null = null
