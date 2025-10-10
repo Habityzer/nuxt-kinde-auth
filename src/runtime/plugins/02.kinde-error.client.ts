@@ -1,3 +1,5 @@
+import { defineNuxtPlugin, useNuxtApp } from '#app'
+
 /**
  * Global error handler for authentication errors
  * Intercepts 401 responses and redirects to login immediately

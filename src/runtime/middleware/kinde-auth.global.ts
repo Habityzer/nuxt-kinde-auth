@@ -1,3 +1,6 @@
+import { defineNuxtRouteMiddleware, navigateTo, useCookie, useRuntimeConfig } from '#app'
+import { useKindeAuth } from '../composables/useKindeAuth'
+
 /**
  * Global auth middleware - checks authentication on route navigation
  * Redirects to login if accessing protected routes without authentication

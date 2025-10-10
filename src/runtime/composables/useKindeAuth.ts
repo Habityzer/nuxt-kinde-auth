@@ -1,4 +1,5 @@
 import { computed, ref, readonly } from 'vue'
+import { navigateTo } from '#app'
 import type { KindeUser } from '../types/index'
 
 // Singleton state - shared across all useKindeAuth() calls

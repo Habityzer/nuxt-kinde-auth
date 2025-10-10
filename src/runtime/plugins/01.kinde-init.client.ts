@@ -1,3 +1,6 @@
+import { defineNuxtPlugin } from '#app'
+import { useKindeAuth } from '../composables/useKindeAuth'
+
 export default defineNuxtPlugin({
   name: 'kinde-auth-init',
   async setup(_nuxtApp) {
