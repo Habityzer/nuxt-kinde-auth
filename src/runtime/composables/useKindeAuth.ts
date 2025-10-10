@@ -41,8 +41,10 @@ export const useKindeAuth = () => {
   // Check if user is authenticated by checking for auth cookies
   const checkAuth = (): boolean => {
     if (import.meta.client) {
-      const hasIdToken = document.cookie.includes('id_token')
-      const hasAccessToken = document.cookie.includes('access_token')
+      // More robust cookie check - ensure we're checking the cookie name exactly
+      const cookies = document.cookie.split(';').map(c => c.trim())
+      const hasIdToken = cookies.some(c => c.startsWith('id_token=') && c.split('=')[1])
+      const hasAccessToken = cookies.some(c => c.startsWith('access_token=') && c.split('=')[1])
       const authenticated = hasIdToken || hasAccessToken
       isAuthenticated.value = authenticated
       return authenticated
@@ -71,7 +73,7 @@ export const useKindeAuth = () => {
         retry: 0,
         onResponseError({ response }) {
           if (response.status === 401) {
-            console.warn('[nuxt-kinde-auth] User not authenticated')
+            // Silently handle - this is expected when not authenticated
             isAuthenticated.value = false
           }
         }
@@ -81,11 +83,11 @@ export const useKindeAuth = () => {
       isAuthenticated.value = true
       return response
     } catch (error) {
-      // Silently handle auth errors
+      // Silently handle 401 errors (expected when not authenticated)
       if (error && typeof error === 'object' && 'statusCode' in error && error.statusCode === 401) {
-        console.debug('[nuxt-kinde-auth] Auth check failed - user not logged in')
-        isAuthenticated.value = false
+        // Silent - this is expected behavior
       } else {
+        // Only log non-auth errors
         console.error('[nuxt-kinde-auth] Failed to fetch user:', error)
       }
       user.value = null
