@@ -1,3 +1,10 @@
+## [1.0.5](https://github.com/Habityzer/nuxt-kinde-auth/compare/v1.0.4...v1.0.5) (2025-10-10)
+
+
+### Bug Fixes
+
+* **kinde:** add createError import to API routes for improved error handling ([997582d](https://github.com/Habityzer/nuxt-kinde-auth/commit/997582d23089d825f2ece8c12ed7dcdc35769810))
+
 ## [1.0.4](https://github.com/Habityzer/nuxt-kinde-auth/compare/v1.0.3...v1.0.4) (2025-10-10)
 
 
