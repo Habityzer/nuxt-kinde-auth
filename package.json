@@ -1,6 +1,6 @@
 {
   "name": "nuxt-kinde-auth",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Kinde authentication module for Nuxt 4",
   "license": "MIT",
   "type": "module",
@@ -79,4 +79,3 @@
     "pnpm": ">=8.0.0"
   }
 }
-

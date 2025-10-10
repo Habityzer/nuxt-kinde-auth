@@ -1,3 +1,10 @@
+# 1.0.0 (2025-10-10)
+
+
+### Bug Fixes
+
+* Address session management issues in nuxt-kinde-auth module, improving stability and user experience. Update dependencies and refine error handling for better performance. ([36864b9](https://github.com/Habityzer/nuxt-kinde-auth/commit/36864b9105dd7705401c877385c6d35aebee66ce))
+
 # Changelog
 
 All notable changes to this project will be documented in this file.
@@ -34,4 +41,3 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Debug mode with token inspection endpoint
 - Console logging for development
 - Automatic type declarations for Nuxt auto-imports
-
