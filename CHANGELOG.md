@@ -1,3 +1,10 @@
+## [1.0.9](https://github.com/Habityzer/nuxt-kinde-auth/compare/v1.0.8...v1.0.9) (2025-10-10)
+
+
+### Bug Fixes
+
+* **kinde:** skip validation of required options in test environment and provide dummy values ([6c2d982](https://github.com/Habityzer/nuxt-kinde-auth/commit/6c2d982c548cc6d3493d5091a5a5fd6b4d48b263))
+
 ## [1.0.8](https://github.com/Habityzer/nuxt-kinde-auth/compare/v1.0.7...v1.0.8) (2025-10-10)
 
 
