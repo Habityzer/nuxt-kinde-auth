@@ -44,12 +44,13 @@ export default defineEventHandler(async (event) => {
     // Get access token
     const accessToken = await client.getToken(sessionManager)
 
-    // Try to get ID token
+    // Try to get ID token from session
     let idToken: string | null = null
     try {
-      idToken = await sessionManager.getSessionItem('id_token')
+      const token = await sessionManager.getSessionItem<string>('id_token')
+      idToken = token || null
     } catch {
-      // ID token not available
+      // ID token not available, that's ok
     }
 
     if (!accessToken) {

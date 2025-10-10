@@ -1,6 +1,5 @@
 import { computed, ref, readonly } from 'vue'
-import { useCookie, navigateTo, useRoute } from 'nuxt/app'
-import type { KindeUser } from '../../types'
+import type { KindeUser } from '../types/index'
 
 // Singleton state - shared across all useKindeAuth() calls
 const user = ref<KindeUser | null>(null)
@@ -30,15 +29,12 @@ export const useKindeAuth = () => {
 
   // Login - redirect to Kinde OAuth
   const login = async () => {
-    // Store intended destination
-    const intendedUrl = useCookie('intended_url')
-    intendedUrl.value = useRoute().fullPath
-
     // Use full page redirect to /api/kinde/login
     if (import.meta.client) {
       window.location.href = '/api/kinde/login'
     } else {
-      // Server-side redirect
+      // Server-side: use navigateTo (imported at runtime)
+      const { navigateTo } = await import('#app')
       await navigateTo('/api/kinde/login', { external: true })
     }
   }

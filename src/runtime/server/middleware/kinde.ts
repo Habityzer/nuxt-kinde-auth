@@ -1,14 +1,13 @@
-import { defineEventHandler, getCookie, setCookie, type H3Event, getRequestHeader } from 'h3'
+import { defineEventHandler, getCookie, setCookie, type H3Event } from 'h3'
 import { createKindeServerClient, GrantType } from '@kinde-oss/kinde-typescript-sdk'
-import { useRuntimeConfig } from 'nuxt/app'
 
 // Lazy-load Kinde client singleton
 let _kindeClient: ReturnType<typeof createKindeServerClient> | null = null
 
-function getKindeClient() {
+function getKindeClient(event: H3Event) {
   if (_kindeClient) return _kindeClient
 
-  const config = useRuntimeConfig()
+  const config = useRuntimeConfig(event)
   _kindeClient = createKindeServerClient(GrantType.AUTHORIZATION_CODE, {
     authDomain: config.kinde.authDomain,
     clientId: config.kinde.clientId,
@@ -21,13 +20,24 @@ function getKindeClient() {
 }
 
 export default defineEventHandler(async (event) => {
+  // Only log for API routes to avoid spam
+  if (event.path?.startsWith('/api/')) {
+    console.log('🔶 [KINDE MIDDLEWARE] Processing:', event.path)
+  }
+  
   const sessionManager = await createSessionManager(event)
-  const kindeClient = getKindeClient()
+  const kindeClient = getKindeClient(event)
 
   // Attach both client and sessionManager to the event context
   event.context.kinde = {
     client: kindeClient,
     sessionManager
+  }
+  
+  if (event.path?.startsWith('/api/kinde')) {
+    console.log('🔶 [KINDE MIDDLEWARE] Kinde context attached for:', event.path)
+    console.log('🔶 [KINDE MIDDLEWARE] Client exists:', !!kindeClient)
+    console.log('🔶 [KINDE MIDDLEWARE] SessionManager exists:', !!sessionManager)
   }
 })
 
@@ -46,12 +56,15 @@ async function createSessionManager(event: H3Event) {
         // First check if we set this cookie during the current request
         if (cookieCache[itemKey] !== undefined) {
           value = cookieCache[itemKey]
+          console.log(`🔶 [SESSION] Reading ${itemKey} from cache:`, value ? 'found' : 'not found')
         } else {
           // Otherwise read from request cookie
           value = getCookie(event, itemKey)
+          console.log(`🔶 [SESSION] Reading ${itemKey} from cookie:`, value ? 'found' : 'not found')
         }
       } else {
         value = memorySession[itemKey]
+        console.log(`🔶 [SESSION] Reading ${itemKey} from memory:`, value ? 'found' : 'not found')
       }
       return value as T | undefined
     },
@@ -67,9 +80,11 @@ async function createSessionManager(event: H3Event) {
           secure: config.kinde.cookie.secure,
           sameSite: config.kinde.cookie.sameSite as 'lax' | 'strict' | 'none',
           path: config.kinde.cookie.path,
-          maxAge: config.kinde.cookie.maxAge
+          maxAge: config.kinde.cookie.maxAge,
+          domain: undefined  // Don't set domain for localhost
         }
 
+        console.log(`🔶 [SESSION] Setting cookie: ${itemKey}`)
         setCookie(event, itemKey, stringValue, cookieOptions)
       } else {
         memorySession[itemKey] = itemValue
