@@ -1,3 +1,10 @@
+## [1.0.8](https://github.com/Habityzer/nuxt-kinde-auth/compare/v1.0.7...v1.0.8) (2025-10-10)
+
+
+### Bug Fixes
+
+* **kinde:** update post-login redirect logic to exclude debug-auth route ([9a4f03e](https://github.com/Habityzer/nuxt-kinde-auth/commit/9a4f03e562e5b8b469abc3e541e925ff2139f18f))
+
 ## [1.0.7](https://github.com/Habityzer/nuxt-kinde-auth/compare/v1.0.6...v1.0.7) (2025-10-10)
 
 
