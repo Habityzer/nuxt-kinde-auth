@@ -1,3 +1,10 @@
+## [1.0.6](https://github.com/Habityzer/nuxt-kinde-auth/compare/v1.0.5...v1.0.6) (2025-10-10)
+
+
+### Bug Fixes
+
+* add missing useRuntimeConfig imports in server handlers ([bb7150b](https://github.com/Habityzer/nuxt-kinde-auth/commit/bb7150bbf50a7144e98fff33407d5a25fc9963f1))
+
 ## [1.0.5](https://github.com/Habityzer/nuxt-kinde-auth/compare/v1.0.4...v1.0.5) (2025-10-10)
 
 
