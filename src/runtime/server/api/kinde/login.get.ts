@@ -11,13 +11,25 @@ export default defineEventHandler(async (event) => {
   }
 
   const { client, sessionManager } = kinde
+  const config = useRuntimeConfig()
 
-  // Store the current URL as post-login redirect
+  // Store the current URL as post-login redirect, but only if it's not a public page
   const referer = event.headers.get('referer')
   if (referer) {
     const url = new URL(referer)
     const redirectPath = url.pathname + url.search
-    await sessionManager.setSessionItem('post-login-redirect-url', redirectPath)
+    
+    // Only store referer if it's not the homepage or another public route
+    // This allows the configured postLoginRedirectURL to take effect when logging in from public pages
+    const publicRoutes = ['/', '/auth/callback', '/debug-auth', '/blog', '/help', '/legal']
+    const isPublicRoute = publicRoutes.some(route => 
+      redirectPath === route || redirectPath.startsWith(`${route}/`) || redirectPath.startsWith(`${route}?`)
+    )
+    
+    if (!isPublicRoute) {
+      // Store the protected page URL so user is redirected back after login
+      await sessionManager.setSessionItem('post-login-redirect-url', redirectPath)
+    }
   }
 
   // Call login with sessionManager and redirect to Kinde's login page
