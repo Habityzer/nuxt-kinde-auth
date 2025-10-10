@@ -1,3 +1,10 @@
+## [1.0.3](https://github.com/Habityzer/nuxt-kinde-auth/compare/v1.0.2...v1.0.3) (2025-10-10)
+
+
+### Bug Fixes
+
+* **kinde:** remove debug logging from API routes and middleware for cleaner code ([0523a82](https://github.com/Habityzer/nuxt-kinde-auth/commit/0523a82edc209ef3a52dfe62349e1825273cb2da))
+
 ## [1.0.1](https://github.com/Habityzer/nuxt-kinde-auth/compare/v1.0.0...v1.0.1) (2025-10-10)
 
 
