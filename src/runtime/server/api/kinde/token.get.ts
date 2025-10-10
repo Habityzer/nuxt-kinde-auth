@@ -1,3 +1,5 @@
+import { defineEventHandler, createError } from 'h3'
+
 /**
  * Get access token from Kinde
  */

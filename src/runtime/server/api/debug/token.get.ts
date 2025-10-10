@@ -1,3 +1,5 @@
+import { defineEventHandler, createError } from 'h3'
+
 /**
  * Debug endpoint to get JWT tokens and decode them
  * Returns both access token and ID token (if available) with decoded payloads

@@ -1,4 +1,4 @@
-import { defineEventHandler, getRequestURL, sendRedirect } from 'h3'
+import { defineEventHandler, getRequestURL, sendRedirect, createError } from 'h3'
 
 export default defineEventHandler(async (event) => {
   const kinde = event.context.kinde
