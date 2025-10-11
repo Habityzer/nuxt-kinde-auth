@@ -4,7 +4,7 @@ import type { ModuleOptions } from './types'
 
 export default defineNuxtModule<ModuleOptions>({
   meta: {
-    name: 'nuxt-kinde-auth',
+    name: '@habityzer/nuxt-kinde-auth',
     configKey: 'kindeAuth',
     compatibility: {
       nuxt: '>=4.0.0'
@@ -39,13 +39,13 @@ export default defineNuxtModule<ModuleOptions>({
     if (!isTestEnv) {
       // Validate required options (only in non-test environments)
       if (!options.authDomain) {
-        throw new Error('[nuxt-kinde-auth] authDomain is required. Please set it in your nuxt.config.ts')
+        throw new Error('[@habityzer/nuxt-kinde-auth] authDomain is required. Please set it in your nuxt.config.ts')
       }
       if (!options.clientId) {
-        throw new Error('[nuxt-kinde-auth] clientId is required. Please set it in your nuxt.config.ts')
+        throw new Error('[@habityzer/nuxt-kinde-auth] clientId is required. Please set it in your nuxt.config.ts')
       }
       if (!options.clientSecret) {
-        throw new Error('[nuxt-kinde-auth] clientSecret is required. Please set it in your nuxt.config.ts')
+        throw new Error('[@habityzer/nuxt-kinde-auth] clientSecret is required. Please set it in your nuxt.config.ts')
       }
     } else {
       // Use dummy values for tests if not provided

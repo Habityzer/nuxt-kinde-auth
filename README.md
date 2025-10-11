@@ -1,4 +1,4 @@
-# nuxt-kinde-auth
+# @habityzer/nuxt-kinde-auth
 
 > Kinde authentication module for Nuxt 4
 
@@ -18,13 +18,13 @@ A plug-and-play authentication module for Nuxt 4 that integrates [Kinde](https:/
 
 ```bash
 # Using pnpm (recommended)
-pnpm add nuxt-kinde-auth
+pnpm add @habityzer/nuxt-kinde-auth
 
 # Using npm
-npm install nuxt-kinde-auth
+npm install @habityzer/nuxt-kinde-auth
 
 # Using yarn
-yarn add nuxt-kinde-auth
+yarn add @habityzer/nuxt-kinde-auth
 ```
 
 ## Quick Start
@@ -34,7 +34,7 @@ yarn add nuxt-kinde-auth
 ```typescript
 // nuxt.config.ts
 export default defineNuxtConfig({
-  modules: ['nuxt-kinde-auth'],
+  modules: ['@habityzer/nuxt-kinde-auth'],
   
   kindeAuth: {
     authDomain: process.env.NUXT_KINDE_AUTH_DOMAIN,
@@ -372,7 +372,7 @@ Returns:
 The module includes full TypeScript support:
 
 ```typescript
-import type { KindeUser } from 'nuxt-kinde-auth'
+import type { KindeUser } from '@habityzer/nuxt-kinde-auth'
 
 const user: KindeUser = {
   id: '123',
@@ -390,7 +390,7 @@ If you have an existing Kinde integration:
 
 1. **Install the module**
    ```bash
-   pnpm add nuxt-kinde-auth
+   pnpm add @habityzer/nuxt-kinde-auth
    ```
 
 2. **Update nuxt.config.ts**
@@ -420,7 +420,7 @@ If you have an existing Kinde integration:
 **Cause:** Module not loaded or configuration missing.
 
 **Solution:** 
-- Ensure `nuxt-kinde-auth` is in your `modules` array
+- Ensure `@habityzer/nuxt-kinde-auth` is in your `modules` array
 - Verify `authDomain`, `clientId`, and `clientSecret` are set
 - Restart dev server
 
