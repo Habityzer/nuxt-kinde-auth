@@ -12,7 +12,7 @@ export default defineEventHandler(async (event) => {
   if (!kinde?.client || !kinde?.sessionManager) {
     throw createError({
       statusCode: 500,
-      statusMessage: 'Kinde authentication not initialized'
+      statusMessage: 'Kinde authentication not initialized',
     })
   }
 
@@ -24,7 +24,7 @@ export default defineEventHandler(async (event) => {
     if (!isAuthenticated) {
       return {
         authenticated: false,
-        message: 'Not authenticated'
+        message: 'Not authenticated',
       }
     }
 
@@ -37,7 +37,7 @@ export default defineEventHandler(async (event) => {
       return {
         authenticated: true,
         hasTokens: false,
-        message: 'Authenticated but no access token found'
+        message: 'Authenticated but no access token found',
       }
     }
 
@@ -57,18 +57,18 @@ export default defineEventHandler(async (event) => {
     // Format time in a human-readable way
     const formatTime = (seconds: number): string => {
       if (seconds <= 0) return 'Expired'
-      
+
       const days = Math.floor(seconds / 86400)
       const hours = Math.floor((seconds % 86400) / 3600)
       const minutes = Math.floor((seconds % 3600) / 60)
       const secs = seconds % 60
-      
+
       const parts = []
       if (days > 0) parts.push(`${days}d`)
       if (hours > 0) parts.push(`${hours}h`)
       if (minutes > 0) parts.push(`${minutes}m`)
       if (secs > 0 && days === 0) parts.push(`${secs}s`) // Only show seconds if less than a day
-      
+
       return parts.join(' ') || '0s'
     }
 
@@ -83,47 +83,49 @@ export default defineEventHandler(async (event) => {
           isExpiringSoon: accessIsExpiringSoon,
           expiresAt: accessExpiry ? new Date(accessExpiry * 1000).toISOString() : null,
           timeUntilExpiry: accessTimeUntilExpiry,
-          timeUntilExpiryFormatted: accessTimeUntilExpiry 
+          timeUntilExpiryFormatted: accessTimeUntilExpiry
             ? formatTime(accessTimeUntilExpiry)
             : null,
           decoded: {
             iat: accessDecoded?.iat ? new Date(accessDecoded.iat * 1000).toISOString() : null,
             exp: accessDecoded?.exp ? new Date(accessDecoded.exp * 1000).toISOString() : null,
             sub: accessDecoded?.sub,
-            aud: accessDecoded?.aud
-          }
+            aud: accessDecoded?.aud,
+          },
         },
         refresh: {
           exists: !!refreshToken,
-          preview: refreshToken ? `${refreshToken.substring(0, 20)}...` : null
+          preview: refreshToken ? `${refreshToken.substring(0, 20)}...` : null,
         },
         id: {
           exists: !!idToken,
           preview: idToken ? `${idToken.substring(0, 20)}...` : null,
           expiresAt: idExpiry ? new Date(idExpiry * 1000).toISOString() : null,
-          decoded: idDecoded ? {
-            email: idDecoded.email,
-            given_name: idDecoded.given_name,
-            family_name: idDecoded.family_name
-          } : null
-        }
+          decoded: idDecoded
+            ? {
+                email: idDecoded.email,
+                given_name: idDecoded.given_name,
+                family_name: idDecoded.family_name,
+              }
+            : null,
+        },
       },
       refreshStatus: {
         canRefresh: !!refreshToken,
         shouldRefresh: accessIsExpiringSoon,
-        reason: accessIsExpired 
+        reason: accessIsExpired
           ? 'Token is expired'
-          : accessIsExpiringSoon 
-          ? 'Token expires in less than 5 minutes'
-          : 'Token is valid'
+          : accessIsExpiringSoon
+            ? 'Token expires in less than 5 minutes'
+            : 'Token is valid',
       },
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     }
-  } catch (error) {
+  }
+  catch (error) {
     throw createError({
       statusCode: 500,
-      statusMessage: error instanceof Error ? error.message : 'Failed to get token info'
+      statusMessage: error instanceof Error ? error.message : 'Failed to get token info',
     })
   }
 })
-

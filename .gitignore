@@ -34,6 +34,10 @@ dist-ssr
 .env.*
 !.env.example
 
+# DevTools Client
+client/.nuxt
+client/.output
+
 # Testing
 coverage
 .nyc_output
@@ -44,3 +48,4 @@ coverage
 # OS
 .DS_Store
 Thumbs.db
+test/

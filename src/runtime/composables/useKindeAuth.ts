@@ -33,7 +33,8 @@ export const useKindeAuth = () => {
     // Use full page redirect to /api/kinde/login
     if (import.meta.client) {
       window.location.href = '/api/kinde/login'
-    } else {
+    }
+    else {
       // Server-side: use navigateTo (available globally)
       await navigateTo('/api/kinde/login', { external: true })
     }
@@ -77,24 +78,27 @@ export const useKindeAuth = () => {
             // Silently handle - this is expected when not authenticated
             isAuthenticated.value = false
           }
-        }
+        },
       })
 
       user.value = response
       isAuthenticated.value = true
       return response
-    } catch (error) {
+    }
+    catch (error) {
       // Silently handle 401 errors (expected when not authenticated)
       if (error && typeof error === 'object' && 'statusCode' in error && error.statusCode === 401) {
         // Silent - this is expected behavior
-      } else {
+      }
+      else {
         // Only log non-auth errors
         console.error('[nuxt-kinde-auth] Failed to fetch user:', error)
       }
       user.value = null
       isAuthenticated.value = false
       return null
-    } finally {
+    }
+    finally {
       isLoading.value = false
     }
   }
@@ -107,11 +111,12 @@ export const useKindeAuth = () => {
         method: 'GET',
         credentials: 'include', // Ensure cookies are sent
         headers: {
-          'Cache-Control': 'no-cache'
-        }
+          'Cache-Control': 'no-cache',
+        },
       })
       return response.token
-    } catch (error) {
+    }
+    catch (error) {
       console.error('[nuxt-kinde-auth] Failed to get token:', error)
       return null
     }
@@ -120,12 +125,13 @@ export const useKindeAuth = () => {
   // Manually refresh tokens
   const refreshToken = async (): Promise<boolean> => {
     try {
-      const response = await $fetch<{ success: boolean; accessToken?: string }>('/api/kinde/refresh', {
+      const response = await $fetch<{ success: boolean, accessToken?: string }>('/api/kinde/refresh', {
         method: 'GET',
-        credentials: 'include' // Ensure cookies are sent and received
+        credentials: 'include', // Ensure cookies are sent and received
       })
       return response.success
-    } catch (error) {
+    }
+    catch (error) {
       console.error('[nuxt-kinde-auth] Failed to refresh token:', error)
       // If refresh fails, clear auth state
       user.value = null
@@ -149,7 +155,7 @@ export const useKindeAuth = () => {
         'user-id',
         'has-authenticated',
         'post-login-redirect-url',
-        'ac-state-key'
+        'ac-state-key',
       ]
 
       cookiesToClear.forEach((cookieName) => {
@@ -179,7 +185,6 @@ export const useKindeAuth = () => {
     checkAuth,
     fetchUser,
     getToken,
-    refreshToken
+    refreshToken,
   }
 }
-

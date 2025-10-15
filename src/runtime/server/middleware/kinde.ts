@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-dynamic-delete */
 import { defineEventHandler, getCookie, setCookie, type H3Event } from 'h3'
 import { createKindeServerClient, GrantType } from '@kinde-oss/kinde-typescript-sdk'
 import { useRuntimeConfig } from '#imports'
@@ -14,7 +16,7 @@ function getKindeClient(event: H3Event) {
     clientId: config.kinde.clientId,
     clientSecret: config.kinde.clientSecret,
     redirectURL: config.kinde.redirectURL,
-    logoutRedirectURL: config.kinde.logoutRedirectURL
+    logoutRedirectURL: config.kinde.logoutRedirectURL,
   })
 
   return _kindeClient
@@ -26,7 +28,7 @@ export default defineEventHandler(async (event) => {
 
   event.context.kinde = {
     client: kindeClient,
-    sessionManager
+    sessionManager,
   }
 })
 
@@ -49,11 +51,13 @@ async function createSessionManager(event: H3Event) {
         // First check if we set this cookie during the current request
         if (cookieCache[itemKey] !== undefined) {
           value = cookieCache[itemKey]
-        } else {
+        }
+        else {
           // Otherwise read from request cookie with prefix
           value = getCookie(event, getPrefixedName(itemKey))
         }
-      } else {
+      }
+      else {
         value = memorySession[itemKey]
       }
       return value as T | undefined
@@ -71,11 +75,12 @@ async function createSessionManager(event: H3Event) {
           sameSite: config.kinde.cookie.sameSite as 'lax' | 'strict' | 'none',
           path: config.kinde.cookie.path,
           maxAge: config.kinde.cookie.maxAge,
-          domain: undefined  // Don't set domain for localhost
+          domain: undefined, // Don't set domain for localhost
         }
 
         setCookie(event, getPrefixedName(itemKey), stringValue, cookieOptions)
-      } else {
+      }
+      else {
         memorySession[itemKey] = itemValue
       }
     },
@@ -88,9 +93,10 @@ async function createSessionManager(event: H3Event) {
           httpOnly: config.kinde.cookie.httpOnly,
           secure: config.kinde.cookie.secure,
           sameSite: config.kinde.cookie.sameSite as 'lax' | 'strict' | 'none',
-          expires: new Date(0)
+          expires: new Date(0),
         })
-      } else {
+      }
+      else {
         delete memorySession[itemKey]
       }
     },
@@ -106,10 +112,9 @@ async function createSessionManager(event: H3Event) {
           httpOnly: config.kinde.cookie.httpOnly,
           secure: config.kinde.cookie.secure,
           sameSite: config.kinde.cookie.sameSite as 'lax' | 'strict' | 'none',
-          expires: new Date(0)
+          expires: new Date(0),
         })
       }
-    }
+    },
   }
 }
-

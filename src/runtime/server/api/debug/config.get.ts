@@ -18,8 +18,7 @@ export default defineEventHandler((event) => {
       secure: config.kinde.cookie.secure,
       sameSite: config.kinde.cookie.sameSite,
       path: config.kinde.cookie.path,
-      maxAge: config.kinde.cookie.maxAge
-    }
+      maxAge: config.kinde.cookie.maxAge,
+    },
   }
 })
-

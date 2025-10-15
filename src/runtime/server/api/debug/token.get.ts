@@ -11,7 +11,7 @@ export default defineEventHandler(async (event) => {
   if (!kinde?.client || !kinde?.sessionManager) {
     throw createError({
       statusCode: 500,
-      statusMessage: 'Kinde authentication not initialized'
+      statusMessage: 'Kinde authentication not initialized',
     })
   }
 
@@ -23,7 +23,7 @@ export default defineEventHandler(async (event) => {
     if (!isAuthenticated) {
       throw createError({
         statusCode: 401,
-        statusMessage: 'Not authenticated'
+        statusMessage: 'Not authenticated',
       })
     }
 
@@ -37,7 +37,8 @@ export default defineEventHandler(async (event) => {
             return JSON.parse(Buffer.from(payload, 'base64').toString())
           }
         }
-      } catch {
+      }
+      catch {
         return null
       }
       return null
@@ -51,14 +52,15 @@ export default defineEventHandler(async (event) => {
     try {
       const token = await sessionManager.getSessionItem<string>('id_token')
       idToken = token || null
-    } catch {
+    }
+    catch {
       // ID token not available, that's ok
     }
 
     if (!accessToken) {
       throw createError({
         statusCode: 404,
-        statusMessage: 'No access token available'
+        statusMessage: 'No access token available',
       })
     }
 
@@ -66,20 +68,20 @@ export default defineEventHandler(async (event) => {
     return {
       accessToken: {
         raw: accessToken,
-        decoded: decodeToken(accessToken)
+        decoded: decodeToken(accessToken),
       },
       idToken: idToken
         ? {
             raw: idToken,
-            decoded: decodeToken(idToken)
+            decoded: decodeToken(idToken),
           }
-        : null
+        : null,
     }
-  } catch (error) {
+  }
+  catch (error) {
     throw createError({
       statusCode: 401,
-      statusMessage: error instanceof Error ? error.message : 'Failed to get tokens'
+      statusMessage: error instanceof Error ? error.message : 'Failed to get tokens',
     })
   }
 })
-

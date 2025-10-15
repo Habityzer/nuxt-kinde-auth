@@ -103,11 +103,17 @@ export interface ModuleOptions {
    */
   debug?: {
     /**
-     * Enable debug endpoints
+     * Enable debug endpoints and DevTools integration
      * @default true in development, false in production
      */
     enabled?: boolean
   }
+
+  /**
+   * Enable Nuxt DevTools integration
+   * @default true
+   */
+  devtools?: boolean
 }
 
 export interface KindeUser {
@@ -118,4 +124,3 @@ export interface KindeUser {
   picture?: string | null | undefined
   [key: string]: unknown
 }
-

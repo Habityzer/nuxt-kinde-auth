@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
   if (!kinde?.client || !kinde?.sessionManager) {
     throw createError({
       statusCode: 500,
-      statusMessage: 'Kinde authentication not initialized'
+      statusMessage: 'Kinde authentication not initialized',
     })
   }
 
@@ -21,7 +21,7 @@ export default defineEventHandler(async (event) => {
     if (!isAuthenticated) {
       throw createError({
         statusCode: 401,
-        statusMessage: 'Not authenticated'
+        statusMessage: 'Not authenticated',
       })
     }
 
@@ -31,19 +31,19 @@ export default defineEventHandler(async (event) => {
     if (!user) {
       throw createError({
         statusCode: 404,
-        statusMessage: 'User not found'
+        statusMessage: 'User not found',
       })
     }
 
     return user
-  } catch (error) {
+  }
+  catch (error) {
     if (error && typeof error === 'object' && 'statusCode' in error) {
       throw error
     }
     throw createError({
       statusCode: 401,
-      statusMessage: error instanceof Error ? error.message : 'Failed to get user'
+      statusMessage: error instanceof Error ? error.message : 'Failed to get user',
     })
   }
 })
-

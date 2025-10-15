@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) => {
   if (!kinde?.client || !kinde?.sessionManager) {
     throw createError({
       statusCode: 500,
-      statusMessage: 'Kinde authentication not initialized'
+      statusMessage: 'Kinde authentication not initialized',
     })
   }
 
@@ -19,10 +19,10 @@ export default defineEventHandler(async (event) => {
     const logoutResponse = await client.logout(sessionManager)
     const logoutUrl = String(logoutResponse)
     return sendRedirect(event, logoutUrl, 302)
-  } catch (error) {
+  }
+  catch (error) {
     console.error('[nuxt-kinde-auth] Error during logout:', error)
     // Even if logout fails, redirect to configured logout URL
     return sendRedirect(event, config.kinde.logoutRedirectURL || '/', 302)
   }
 })
-

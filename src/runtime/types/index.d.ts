@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export interface KindeUser {
   id: string
   email?: string | null
@@ -46,11 +47,10 @@ interface KindeClient {
 declare module 'h3' {
   interface H3EventContext {
     kinde?: {
-      client: any  // Kinde SDK client type
+      client: any // Kinde SDK client type
       sessionManager: SessionManager
     }
   }
 }
 
 export type { KindeUser, SessionManager, KindeClient }
-

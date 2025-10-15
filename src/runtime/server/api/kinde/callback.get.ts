@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) => {
   if (!kinde?.client || !kinde?.sessionManager) {
     throw createError({
       statusCode: 500,
-      statusMessage: 'Kinde authentication not initialized'
+      statusMessage: 'Kinde authentication not initialized',
     })
   }
 
@@ -33,11 +33,11 @@ export default defineEventHandler(async (event) => {
     // Default redirect to configured post-login URL or homepage
     const defaultRedirect = config.kinde.postLoginRedirectURL || '/'
     return sendRedirect(event, defaultRedirect, 302)
-  } catch (error) {
+  }
+  catch (error) {
     throw createError({
       statusCode: 500,
-      statusMessage: error instanceof Error ? error.message : 'OAuth callback failed'
+      statusMessage: error instanceof Error ? error.message : 'OAuth callback failed',
     })
   }
 })
-

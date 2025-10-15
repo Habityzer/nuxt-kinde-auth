@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
   if (!kinde?.client || !kinde?.sessionManager) {
     throw createError({
       statusCode: 500,
-      statusMessage: 'Kinde authentication not initialized'
+      statusMessage: 'Kinde authentication not initialized',
     })
   }
 
@@ -18,11 +18,11 @@ export default defineEventHandler(async (event) => {
   try {
     // Check if we have a refresh token
     const refreshToken = await sessionManager.getSessionItem<string>('refresh_token')
-    
+
     if (!refreshToken) {
       throw createError({
         statusCode: 401,
-        statusMessage: 'No refresh token available'
+        statusMessage: 'No refresh token available',
       })
     }
 
@@ -34,19 +34,19 @@ export default defineEventHandler(async (event) => {
       success: true,
       accessToken: tokenResponse.access_token,
       expiresIn: tokenResponse.expires_in,
-      message: 'Tokens refreshed successfully'
+      message: 'Tokens refreshed successfully',
     }
-  } catch (error) {
+  }
+  catch (error) {
     console.error('[nuxt-kinde-auth] Token refresh failed:', error)
-    
+
     // If refresh fails, the refresh token might be expired/invalid
     // Clear session and require re-authentication
     await sessionManager.destroySession()
-    
+
     throw createError({
       statusCode: 401,
-      statusMessage: error instanceof Error ? error.message : 'Token refresh failed'
+      statusMessage: error instanceof Error ? error.message : 'Token refresh failed',
     })
   }
 })
-

@@ -14,7 +14,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
 
   // Check if the route is public or a child of public routes
   const isPublicRoute = allPublicRoutes.some(route =>
-    to.path === route || to.path.startsWith(`${route}/`)
+    to.path === route || to.path.startsWith(`${route}/`),
   )
 
   // If it's a public route, allow access
@@ -33,7 +33,8 @@ export default defineNuxtRouteMiddleware(async (to) => {
       // Redirect to login API endpoint (external, not a Vue route)
       return navigateTo('/api/kinde/login', { external: true })
     }
-  } else {
+  }
+  else {
     // Client-side: Use the auth composable
     const { isAuthenticated, checkAuth } = useKindeAuth()
 
@@ -49,4 +50,3 @@ export default defineNuxtRouteMiddleware(async (to) => {
     }
   }
 })
-

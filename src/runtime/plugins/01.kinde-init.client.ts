@@ -21,12 +21,12 @@ export default defineNuxtPlugin({
         try {
           // Fetch user profile from Kinde
           await fetchUser()
-        } catch (error) {
+        }
+        catch (error) {
           // Silently fail - middleware and error handlers will handle redirects
           console.debug('[nuxt-kinde-auth] Failed to fetch user on init:', error)
         }
       }
     }
-  }
+  },
 })
-

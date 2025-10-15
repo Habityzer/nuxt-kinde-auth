@@ -1,15 +1,15 @@
 import { defineNuxtModule, addServerHandler, addPlugin, addImports, createResolver, addServerImportsDir } from '@nuxt/kit'
-import { addCustomTab } from '@nuxt/devtools-kit'
 import { defu } from 'defu'
 import type { ModuleOptions } from './types'
+import { setupDevToolsUI } from './devtools'
 
 export default defineNuxtModule<ModuleOptions>({
   meta: {
     name: '@habityzer/nuxt-kinde-auth',
     configKey: 'kindeAuth',
     compatibility: {
-      nuxt: '>=4.0.0'
-    }
+      nuxt: '>=4.0.0',
+    },
   },
   defaults: {
     redirectURL: '/api/kinde/callback',
@@ -21,23 +21,24 @@ export default defineNuxtModule<ModuleOptions>({
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
       path: '/',
-      maxAge: 60 * 60 * 24 * 7 // 7 days
+      maxAge: 60 * 60 * 24 * 7, // 7 days
     },
     middleware: {
       enabled: true,
       global: true,
-      publicRoutes: ['/']
+      publicRoutes: ['/'],
     },
     debug: {
-      enabled: process.env.NODE_ENV !== 'production'
-    }
+      enabled: process.env.NODE_ENV !== 'production',
+    },
+    devtools: true,
   },
   setup(options, nuxt) {
     const resolver = createResolver(import.meta.url)
 
     // Skip validation in test environment
     const isTestEnv = process.env.NODE_ENV === 'test' || process.env.VITEST === 'true'
-    
+
     if (!isTestEnv) {
       // Validate required options (only in non-test environments)
       if (!options.authDomain) {
@@ -49,7 +50,8 @@ export default defineNuxtModule<ModuleOptions>({
       if (!options.clientSecret) {
         throw new Error('[@habityzer/nuxt-kinde-auth] clientSecret is required. Please set it in your nuxt.config.ts')
       }
-    } else {
+    }
+    else {
       // Use dummy values for tests if not provided
       options.authDomain = options.authDomain || 'https://test.kinde.com'
       options.clientId = options.clientId || 'test-client-id'
@@ -64,66 +66,67 @@ export default defineNuxtModule<ModuleOptions>({
       redirectURL: options.redirectURL,
       logoutRedirectURL: options.logoutRedirectURL,
       postLoginRedirectURL: options.postLoginRedirectURL,
-      cookie: options.cookie
+      cookie: options.cookie,
     })
 
     nuxt.options.runtimeConfig.public.kindeAuth = defu(nuxt.options.runtimeConfig.public.kindeAuth, {
       middleware: options.middleware || undefined,
-      debug: options.debug || undefined
+      debug: options.debug || undefined,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     }) as any
 
     // Add server middleware (runs first with 00. prefix)
     addServerHandler({
       handler: resolver.resolve('./runtime/server/middleware/kinde'),
-      middleware: true
+      middleware: true,
     })
 
     // Add API routes
     addServerHandler({
       route: '/api/kinde/login',
-      handler: resolver.resolve('./runtime/server/api/kinde/login.get')
+      handler: resolver.resolve('./runtime/server/api/kinde/login.get'),
     })
 
     addServerHandler({
       route: '/api/kinde/logout',
-      handler: resolver.resolve('./runtime/server/api/kinde/logout.get')
+      handler: resolver.resolve('./runtime/server/api/kinde/logout.get'),
     })
 
     addServerHandler({
       route: '/api/kinde/callback',
-      handler: resolver.resolve('./runtime/server/api/kinde/callback.get')
+      handler: resolver.resolve('./runtime/server/api/kinde/callback.get'),
     })
 
     addServerHandler({
       route: '/api/kinde/user',
-      handler: resolver.resolve('./runtime/server/api/kinde/user.get')
+      handler: resolver.resolve('./runtime/server/api/kinde/user.get'),
     })
 
     addServerHandler({
       route: '/api/kinde/token',
-      handler: resolver.resolve('./runtime/server/api/kinde/token.get')
+      handler: resolver.resolve('./runtime/server/api/kinde/token.get'),
     })
 
     addServerHandler({
       route: '/api/kinde/refresh',
-      handler: resolver.resolve('./runtime/server/api/kinde/refresh.get')
+      handler: resolver.resolve('./runtime/server/api/kinde/refresh.get'),
     })
 
     // Add debug endpoints (only if enabled)
     if (options.debug?.enabled) {
       addServerHandler({
         route: '/api/kinde/debug/token',
-        handler: resolver.resolve('./runtime/server/api/debug/token.get')
+        handler: resolver.resolve('./runtime/server/api/debug/token.get'),
       })
-      
+
       addServerHandler({
         route: '/api/kinde/debug/token-info',
-        handler: resolver.resolve('./runtime/server/api/debug/token-info.get')
+        handler: resolver.resolve('./runtime/server/api/debug/token-info.get'),
       })
-      
+
       addServerHandler({
         route: '/api/kinde/debug/config',
-        handler: resolver.resolve('./runtime/server/api/debug/config.get')
+        handler: resolver.resolve('./runtime/server/api/debug/config.get'),
       })
     }
 
@@ -131,7 +134,7 @@ export default defineNuxtModule<ModuleOptions>({
     addImports({
       name: 'useKindeAuth',
       as: 'useKindeAuth',
-      from: resolver.resolve('./runtime/composables/useKindeAuth')
+      from: resolver.resolve('./runtime/composables/useKindeAuth'),
     })
 
     // Add plugins
@@ -139,27 +142,22 @@ export default defineNuxtModule<ModuleOptions>({
     if (options.debug?.enabled) {
       addPlugin({
         src: resolver.resolve('./runtime/plugins/00.kinde-debug-info.client'),
-        mode: 'client'
+        mode: 'client',
       })
     }
 
     addPlugin({
       src: resolver.resolve('./runtime/plugins/01.kinde-init.client'),
-      mode: 'client'
+      mode: 'client',
     })
 
     addPlugin({
       src: resolver.resolve('./runtime/plugins/02.kinde-error.client'),
-      mode: 'client'
+      mode: 'client',
     })
 
-    // Add route middleware (only if enabled)
-    if (options.middleware?.enabled) {
-      addServerHandler({
-        handler: resolver.resolve('./runtime/middleware/kinde-auth.global'),
-        middleware: true
-      })
-    }
+    // Note: Route middleware is not added automatically to avoid SSR issues
+    // Users can add it manually if needed by creating middleware/kinde-auth.global.ts in their app
 
     // Add server imports
     addServerImportsDir(resolver.resolve('./runtime/server/utils'))
@@ -169,33 +167,11 @@ export default defineNuxtModule<ModuleOptions>({
       references.push({ path: resolver.resolve('./runtime/types/index.d.ts') })
     })
 
-    // Add debug features (only when debug is enabled)
-    if (options.debug?.enabled) {
-      // Add debug page
-      nuxt.hook('pages:extend', (pages) => {
-        pages.push({
-          name: 'kinde-debug',
-          path: '/__kinde-debug',
-          file: resolver.resolve('./runtime/pages/kinde-debug.vue')
-        })
-      })
-
-      // Register custom DevTools tab (only in dev mode)
-      if (nuxt.options.dev) {
-        nuxt.hook('devtools:customTabs', (tabs) => {
-          tabs.push({
-            name: 'kinde-auth',
-            title: 'Kinde Auth',
-            icon: 'carbon:user-authentication',
-            view: {
-              type: 'iframe',
-              src: '/__kinde-debug'
-            }
-          })
-        })
-      }
+    // Setup DevTools UI (only when debug and devtools are enabled)
+    if (options.debug?.enabled && options.devtools) {
+      setupDevToolsUI(nuxt, resolver)
     }
-  }
+  },
 })
 
 declare module '@nuxt/schema' {
@@ -230,4 +206,3 @@ declare module '@nuxt/schema' {
     }
   }
 }
-
