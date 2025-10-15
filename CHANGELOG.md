@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/Habityzer/nuxt-kinde-auth/compare/v1.0.9...v1.1.0) (2025-10-15)
+
+
+### Features
+
+* **kinde:** add cookie prefix option to prevent conflicts in multi-project setups ([8064509](https://github.com/Habityzer/nuxt-kinde-auth/commit/806450943ebe8f9e1b19ec5046e05dbe51a0f895))
+
 ## [1.0.9](https://github.com/Habityzer/nuxt-kinde-auth/compare/v1.0.8...v1.0.9) (2025-10-10)
 
 
