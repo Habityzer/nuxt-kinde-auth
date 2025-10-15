@@ -100,15 +100,37 @@ export const useKindeAuth = () => {
   }
 
   // Get access token from server
+  // Automatically refreshes expired tokens
   const getToken = async (): Promise<string | null> => {
     try {
       const response = await $fetch<{ token: string }>('/api/kinde/token', {
-        method: 'GET'
+        method: 'GET',
+        credentials: 'include', // Ensure cookies are sent
+        headers: {
+          'Cache-Control': 'no-cache'
+        }
       })
       return response.token
     } catch (error) {
       console.error('[nuxt-kinde-auth] Failed to get token:', error)
       return null
+    }
+  }
+
+  // Manually refresh tokens
+  const refreshToken = async (): Promise<boolean> => {
+    try {
+      const response = await $fetch<{ success: boolean; accessToken?: string }>('/api/kinde/refresh', {
+        method: 'GET',
+        credentials: 'include' // Ensure cookies are sent and received
+      })
+      return response.success
+    } catch (error) {
+      console.error('[nuxt-kinde-auth] Failed to refresh token:', error)
+      // If refresh fails, clear auth state
+      user.value = null
+      isAuthenticated.value = false
+      return false
     }
   }
 
@@ -156,7 +178,8 @@ export const useKindeAuth = () => {
     logout,
     checkAuth,
     fetchUser,
-    getToken
+    getToken,
+    refreshToken
   }
 }
 

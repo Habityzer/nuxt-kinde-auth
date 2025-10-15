@@ -1,4 +1,5 @@
 import { defineNuxtModule, addServerHandler, addPlugin, addImports, createResolver, addServerImportsDir } from '@nuxt/kit'
+import { addCustomTab } from '@nuxt/devtools-kit'
 import { defu } from 'defu'
 import type { ModuleOptions } from './types'
 
@@ -103,11 +104,26 @@ export default defineNuxtModule<ModuleOptions>({
       handler: resolver.resolve('./runtime/server/api/kinde/token.get')
     })
 
-    // Add debug endpoint (only if enabled)
+    addServerHandler({
+      route: '/api/kinde/refresh',
+      handler: resolver.resolve('./runtime/server/api/kinde/refresh.get')
+    })
+
+    // Add debug endpoints (only if enabled)
     if (options.debug?.enabled) {
       addServerHandler({
         route: '/api/kinde/debug/token',
         handler: resolver.resolve('./runtime/server/api/debug/token.get')
+      })
+      
+      addServerHandler({
+        route: '/api/kinde/debug/token-info',
+        handler: resolver.resolve('./runtime/server/api/debug/token-info.get')
+      })
+      
+      addServerHandler({
+        route: '/api/kinde/debug/config',
+        handler: resolver.resolve('./runtime/server/api/debug/config.get')
       })
     }
 
@@ -119,6 +135,14 @@ export default defineNuxtModule<ModuleOptions>({
     })
 
     // Add plugins
+    // Debug info plugin (00. runs first, only in debug mode)
+    if (options.debug?.enabled) {
+      addPlugin({
+        src: resolver.resolve('./runtime/plugins/00.kinde-debug-info.client'),
+        mode: 'client'
+      })
+    }
+
     addPlugin({
       src: resolver.resolve('./runtime/plugins/01.kinde-init.client'),
       mode: 'client'
@@ -144,6 +168,33 @@ export default defineNuxtModule<ModuleOptions>({
     nuxt.hook('prepare:types', ({ references }) => {
       references.push({ path: resolver.resolve('./runtime/types/index.d.ts') })
     })
+
+    // Add debug features (only when debug is enabled)
+    if (options.debug?.enabled) {
+      // Add debug page
+      nuxt.hook('pages:extend', (pages) => {
+        pages.push({
+          name: 'kinde-debug',
+          path: '/__kinde-debug',
+          file: resolver.resolve('./runtime/pages/kinde-debug.vue')
+        })
+      })
+
+      // Register custom DevTools tab (only in dev mode)
+      if (nuxt.options.dev) {
+        nuxt.hook('devtools:customTabs', (tabs) => {
+          tabs.push({
+            name: 'kinde-auth',
+            title: 'Kinde Auth',
+            icon: 'carbon:user-authentication',
+            view: {
+              type: 'iframe',
+              src: '/__kinde-debug'
+            }
+          })
+        })
+      }
+    }
   }
 })
 

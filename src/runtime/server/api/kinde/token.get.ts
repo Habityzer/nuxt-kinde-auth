@@ -1,7 +1,9 @@
 import { defineEventHandler, createError } from 'h3'
+import { isTokenExpired } from '../../utils/token'
 
 /**
  * Get access token from Kinde
+ * Automatically refreshes the token if expired or about to expire
  */
 export default defineEventHandler(async (event) => {
   const kinde = event.context.kinde
@@ -25,13 +27,43 @@ export default defineEventHandler(async (event) => {
       })
     }
 
-    const token = await client.getToken(sessionManager)
+    let token = await client.getToken(sessionManager)
 
     if (!token) {
       throw createError({
         statusCode: 404,
         statusMessage: 'No access token available'
       })
+    }
+
+    // Check if token is expired or about to expire (within 5 minutes)
+    if (isTokenExpired(token, 300)) {
+      console.log('[nuxt-kinde-auth] Access token expired or expiring soon, refreshing...')
+      
+      try {
+        // Refresh the tokens
+        await client.refreshTokens(sessionManager)
+        
+        // Get the new token
+        token = await client.getToken(sessionManager)
+        
+        if (!token) {
+          throw createError({
+            statusCode: 500,
+            statusMessage: 'Failed to get token after refresh'
+          })
+        }
+        
+        console.log('[nuxt-kinde-auth] Token refreshed successfully')
+      } catch (refreshError) {
+        console.error('[nuxt-kinde-auth] Token refresh failed:', refreshError)
+        // If refresh fails, clear session
+        await sessionManager.destroySession()
+        throw createError({
+          statusCode: 401,
+          statusMessage: 'Token expired and refresh failed. Please log in again.'
+        })
+      }
     }
 
     return { token }

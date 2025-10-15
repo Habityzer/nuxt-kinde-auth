@@ -170,6 +170,7 @@ The main composable for authentication functionality.
   checkAuth: () => boolean
   fetchUser: () => Promise<KindeUser | null>
   getToken: () => Promise<string | null>
+  refreshToken: () => Promise<boolean>
 }
 ```
 
@@ -196,7 +197,8 @@ The module automatically registers these endpoints:
 | `/api/kinde/logout` | GET | Logout and clear session |
 | `/api/kinde/callback` | GET | OAuth callback handler |
 | `/api/kinde/user` | GET | Get current user info |
-| `/api/kinde/token` | GET | Get access token |
+| `/api/kinde/token` | GET | Get access token (auto-refreshes if expired) |
+| `/api/kinde/refresh` | GET | Manually refresh access token |
 | `/api/kinde/debug/token` | GET | Debug endpoint (dev only) |
 
 ## Server-Side Usage
@@ -326,21 +328,35 @@ export const useAuth = () => {
 }
 ```
 
-### Custom Token Usage
+### Token Management & Auto-Refresh
 
-Use Kinde tokens to authenticate API calls:
+The module automatically manages token refresh using the stored refresh token. When you call `getToken()`, it checks if the access token is expired or about to expire (within 5 minutes) and automatically refreshes it:
 
 ```typescript
-const { getToken } = useKindeAuth()
+const { getToken, refreshToken } = useKindeAuth()
 
-const token = await getToken()
+// Automatic refresh - the module handles expired tokens
+const token = await getToken() // Refreshes automatically if needed
 
+// Use token in API calls
 const data = await $fetch('/api/protected-resource', {
   headers: {
     Authorization: `Bearer ${token}`
   }
 })
+
+// Manual refresh (optional)
+const success = await refreshToken()
+if (success) {
+  console.log('Token refreshed successfully')
+}
 ```
+
+**How it works:**
+1. Access tokens are checked for expiry before being returned
+2. If expired or expiring soon (< 5 minutes), the refresh token is used automatically
+3. New tokens are saved to cookies seamlessly
+4. If refresh fails (expired refresh token), the user is logged out
 
 ### Proxy Pattern for Backend API
 
@@ -365,7 +381,7 @@ export default defineEventHandler(async (event) => {
 
 ## Debug Mode
 
-Enable debug endpoints in development:
+Enable debug endpoints and debug page in development:
 
 ```typescript
 // nuxt.config.ts
@@ -378,14 +394,91 @@ export default defineNuxtConfig({
 })
 ```
 
-Access debug token information:
+### 🛠️ Nuxt DevTools Integration
 
+The module automatically adds a **"Kinde Auth"** tab to your Nuxt DevTools in development mode!
+
+**To use it:**
+
+1. Open your Nuxt app in development mode
+2. Click the **Nuxt icon** (usually bottom-right corner, or press `Shift + Alt/Option + D`)
+3. Click the **"Kinde Auth"** tab in the DevTools sidebar
+
+The DevTools tab displays:
+
+- ✅ **Authentication Status** - Live status indicator  
+- ✅ **Current User Info** - See authenticated user details
+- ✅ **Token Status** - Real-time token expiry countdown with auto-refresh
+- ✅ **Configuration** - All your Kinde settings (cookie prefix, redirects, etc.)
+- ✅ **Interactive Testing** - Test token refresh, API calls, and more
+
+**No configuration needed!** The tab appears automatically when `debug.enabled` is `true`.
+
+### 🔍 Debug Page
+
+When debug mode is enabled, the debug URL will be logged to your browser console on app startup.
+
+**Access the interactive debug page at:**
+
+```
+http://localhost:3000/__kinde-debug
+```
+
+**Quick Access:** Bookmark this URL or check your browser console for the debug link!
+
+The debug page provides:
+- ✅ **Configuration Display** - View all your Kinde settings (cookie prefix, redirects, etc.)
+- ✅ **Real-time Token Status** - Expiry countdown and status indicators
+- ✅ **Interactive Token Refresh** - Test manual and automatic refresh
+- ✅ **API Call Testing** - Verify tokens work with your endpoints
+- ✅ **Token Inspection** - Decode and view token contents
+- ✅ **Auto-refresh** - Updates every 10 seconds
+- ✅ **User Information** - Display current user details
+
+**Perfect for testing:**
+- Token expiry and refresh functionality
+- API calls with authentication
+- Token lifecycle management
+- Troubleshooting auth issues
+- Verifying configuration settings
+
+### Debug API Endpoints
+
+#### Token Information
+```
+GET /api/kinde/debug/token-info
+```
+
+Returns comprehensive token status:
+```json
+{
+  "authenticated": true,
+  "tokens": {
+    "access": {
+      "isExpired": false,
+      "isExpiringSoon": true,
+      "expiresAt": "2024-01-01T12:00:00Z",
+      "timeUntilExpiry": 245,
+      "timeUntilExpiryFormatted": "4m 5s"
+    },
+    "refresh": {
+      "exists": true
+    }
+  },
+  "refreshStatus": {
+    "canRefresh": true,
+    "shouldRefresh": true,
+    "reason": "Token expires in less than 5 minutes"
+  }
+}
+```
+
+#### Raw Tokens
 ```
 GET /api/kinde/debug/token
 ```
 
-Returns:
-
+Returns decoded tokens:
 ```json
 {
   "accessToken": {
@@ -473,6 +566,16 @@ If you have an existing Kinde integration:
 - Ensure `/api/kinde/callback` is in `publicRoutes`
 - Check that middleware is not blocking auth endpoints
 - Disable module middleware if using custom middleware
+
+### Token Refresh Issues
+
+**Cause:** Refresh token expired or invalid.
+
+**Solution:**
+- Refresh tokens have a longer lifespan but do expire eventually
+- If refresh fails, users must re-authenticate
+- Check Kinde dashboard for token expiry settings
+- The module automatically handles this by clearing session and requiring login
 
 ## Requirements
 
