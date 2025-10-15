@@ -100,6 +100,7 @@ export default defineNuxtConfig({
     
     // Cookie configuration
     cookie: {
+      prefix: 'myapp_',    // Optional: Prefix for cookie names
       httpOnly: false,     // Allow client-side access for logout
       secure: true,        // HTTPS only in production
       sameSite: 'lax',     // CSRF protection
@@ -126,11 +127,14 @@ export default defineNuxtConfig({
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
+| `prefix` | `string` | `''` | Cookie name prefix to prevent conflicts between projects |
 | `httpOnly` | `boolean` | `false` | HttpOnly flag for cookies |
 | `secure` | `boolean` | `true` (prod) | Secure flag for cookies |
 | `sameSite` | `'lax' \| 'strict' \| 'none'` | `'lax'` | SameSite attribute |
 | `path` | `string` | `'/'` | Cookie path |
 | `maxAge` | `number` | `604800` | Max age in seconds (7 days) |
+
+**Note:** The `prefix` option is useful when running multiple projects on localhost:3000. For example, setting `prefix: 'project1_'` will create cookies like `project1_access_token` instead of just `access_token`, preventing conflicts between different projects.
 
 ### Middleware Options
 
@@ -271,6 +275,34 @@ export default defineNuxtRouteMiddleware((to) => {
 ```
 
 ## Advanced Usage
+
+### Cookie Prefix for Multiple Projects
+
+When developing multiple Nuxt projects locally, they typically run on the same domain (`localhost:3000`), which can cause cookie conflicts. Use the `cookie.prefix` option to isolate sessions:
+
+```typescript
+// Project 1: Habityzer
+export default defineNuxtConfig({
+  kindeAuth: {
+    cookie: {
+      prefix: 'habityzer_'
+    }
+  }
+})
+
+// Project 2: Dashboard
+export default defineNuxtConfig({
+  kindeAuth: {
+    cookie: {
+      prefix: 'dashboard_'
+    }
+  }
+})
+```
+
+This creates separate cookies for each project:
+- Project 1: `habityzer_access_token`, `habityzer_refresh_token`, etc.
+- Project 2: `dashboard_access_token`, `dashboard_refresh_token`, etc.
 
 ### Extending the Module
 

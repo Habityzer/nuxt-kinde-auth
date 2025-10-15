@@ -38,6 +38,13 @@ export interface ModuleOptions {
    */
   cookie?: {
     /**
+     * Cookie name prefix to prevent conflicts between multiple projects
+     * @default '' (no prefix)
+     * @example 'myapp_' will create cookies like 'myapp_access_token'
+     */
+    prefix?: string
+
+    /**
      * HttpOnly flag for cookies
      * @default false (allows client-side logout)
      */

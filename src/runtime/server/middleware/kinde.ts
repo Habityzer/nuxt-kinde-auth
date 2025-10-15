@@ -34,9 +34,13 @@ async function createSessionManager(event: H3Event) {
   const keysInCookie = ['refresh_token', 'access_token', 'id_token', 'ac-state-key', 'post-login-redirect-url']
   const memorySession: Record<string, any> = {}
   const config = useRuntimeConfig(event)
+  const cookiePrefix = config.kinde.cookie.prefix || ''
 
   // Cache for cookies set during this request (so we can read them immediately)
   const cookieCache: Record<string, string> = {}
+
+  // Helper function to get prefixed cookie name
+  const getPrefixedName = (name: string) => cookiePrefix + name
 
   return {
     async getSessionItem<T = unknown>(itemKey: string): Promise<T | undefined> {
@@ -46,8 +50,8 @@ async function createSessionManager(event: H3Event) {
         if (cookieCache[itemKey] !== undefined) {
           value = cookieCache[itemKey]
         } else {
-          // Otherwise read from request cookie
-          value = getCookie(event, itemKey)
+          // Otherwise read from request cookie with prefix
+          value = getCookie(event, getPrefixedName(itemKey))
         }
       } else {
         value = memorySession[itemKey]
@@ -70,7 +74,7 @@ async function createSessionManager(event: H3Event) {
           domain: undefined  // Don't set domain for localhost
         }
 
-        setCookie(event, itemKey, stringValue, cookieOptions)
+        setCookie(event, getPrefixedName(itemKey), stringValue, cookieOptions)
       } else {
         memorySession[itemKey] = itemValue
       }
@@ -79,7 +83,7 @@ async function createSessionManager(event: H3Event) {
       if (keysInCookie.includes(itemKey)) {
         delete cookieCache[itemKey]
         // Delete by setting empty value with expires in the past
-        setCookie(event, itemKey, '', {
+        setCookie(event, getPrefixedName(itemKey), '', {
           path: config.kinde.cookie.path,
           httpOnly: config.kinde.cookie.httpOnly,
           secure: config.kinde.cookie.secure,
@@ -97,7 +101,7 @@ async function createSessionManager(event: H3Event) {
       for (const key of keysInCookie) {
         delete cookieCache[key]
         // Delete by setting empty value with expires in the past
-        setCookie(event, key, '', {
+        setCookie(event, getPrefixedName(key), '', {
           path: config.kinde.cookie.path,
           httpOnly: config.kinde.cookie.httpOnly,
           secure: config.kinde.cookie.secure,

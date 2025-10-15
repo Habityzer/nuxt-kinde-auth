@@ -15,6 +15,7 @@ export default defineNuxtModule<ModuleOptions>({
     logoutRedirectURL: '/',
     postLoginRedirectURL: '/',
     cookie: {
+      prefix: '',
       httpOnly: false,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
@@ -156,6 +157,7 @@ declare module '@nuxt/schema' {
       logoutRedirectURL: string
       postLoginRedirectURL: string
       cookie: {
+        prefix: string
         httpOnly: boolean
         secure: boolean
         sameSite: 'lax' | 'strict' | 'none'
