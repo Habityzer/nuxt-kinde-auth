@@ -9,7 +9,6 @@ export default defineNuxtPlugin(() => {
       '%c🔍 Kinde Auth Debug',
       'background: #6366f1; color: white; padding: 4px 8px; border-radius: 4px; font-weight: bold;',
       '\n\n'
-      + '📍 Debug Page: http://localhost:3000/__kinde-debug\n'
       + '🔧 API Endpoints:\n'
       + '   • /api/kinde/debug/token-info\n'
       + '   • /api/kinde/debug/config\n'
