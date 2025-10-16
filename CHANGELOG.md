@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v1.2.1
+
+[compare changes](https://github.com/Habityzer/nuxt-kinde-auth/compare/v1.2.0...v1.2.1)
+
+### 🩹 Fixes
+
+- **kinde:** Remove debug page URL from debug info log ([4a758d2](https://github.com/Habityzer/nuxt-kinde-auth/commit/4a758d2))
+
+### ❤️ Contributors
+
+- Vazgen Manukyan <vazgenmanukyan@cloud.upwork.com>
+
 ## v1.2.0
 
 [compare changes](https://github.com/Habityzer/nuxt-kinde-auth/compare/v1.1.0...v1.2.0)
