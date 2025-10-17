@@ -1,6 +1,6 @@
 {
   "name": "@habityzer/nuxt-kinde-auth",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Kinde authentication module for Nuxt 4",
   "license": "MIT",
   "type": "module",

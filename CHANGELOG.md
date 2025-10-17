@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v1.2.2
+
+[compare changes](https://github.com/Habityzer/nuxt-kinde-auth/compare/v1.2.1...v1.2.2)
+
+### 🩹 Fixes
+
+- **kinde:** Remove API endpoints from debug info log for cleaner output ([58bcf36](https://github.com/Habityzer/nuxt-kinde-auth/commit/58bcf36))
+
+### ❤️ Contributors
+
+- Vazgen Manukyan <vazgenmanukyan@cloud.upwork.com>
+
 ## v1.2.1
 
 [compare changes](https://github.com/Habityzer/nuxt-kinde-auth/compare/v1.2.0...v1.2.1)
