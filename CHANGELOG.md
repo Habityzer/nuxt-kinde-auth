@@ -1,3 +1,11 @@
+## [1.3.3](https://github.com/Habityzer/nuxt-kinde-auth/compare/v1.3.2...v1.3.3) (2026-02-17)
+
+
+### Bug Fixes
+
+* add missing conventional-changelog-conventionalcommits dependency ([4abff34](https://github.com/Habityzer/nuxt-kinde-auth/commit/4abff347ba468fe0097f6c920c0dd0528ca5f2ee))
+* update Node.js version to 22 for semantic-release compatibility ([15fe92d](https://github.com/Habityzer/nuxt-kinde-auth/commit/15fe92d241e6f12e65680d74e024cd5e29333087))
+
 # Changelog
 
 
@@ -61,4 +69,3 @@
 ### ❤️ Contributors
 
 - Vazgen Manukyan <vazgenmanukyan@cloud.upwork.com>
-
