@@ -1,0 +1,66 @@
+name: Publish to npm
+
+on:
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+      id-token: write
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+          registry-url: 'https://registry.npmjs.org'
+      
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      
+      - name: Prepare Nuxt
+        env:
+          KINDE_AUTH_DOMAIN: https://placeholder.kinde.com
+          KINDE_CLIENT_ID: placeholder_client_id
+          KINDE_CLIENT_SECRET: placeholder_client_secret
+          KINDE_REDIRECT_URL: http://localhost:3000/api/auth/callback
+          KINDE_LOGOUT_REDIRECT_URL: http://localhost:3000
+          NUXT_PUBLIC_AUTH_COOKIE_PREFIX: auth_
+          NUXT_PUBLIC_AUTH_LOGIN_PATH: /login
+          NUXT_PUBLIC_AUTH_CLOCK_SKEW_SECONDS: 300
+          NUXT_PUBLIC_AUTH_APP_TOKEN_PREFIX: Bearer
+          NUXT_PUBLIC_AUTH_E2E_TOKEN_COOKIE_NAME: e2e_token
+          NUXT_PUBLIC_AUTH_ID_TOKEN_NAME: id_token
+          NUXT_PUBLIC_AUTH_ACCESS_TOKEN_NAME: access_token
+          NUXT_PUBLIC_AUTH_REFRESH_TOKEN_NAME: refresh_token
+        run: pnpm nuxt prepare
+      
+      - name: Run linter
+        run: pnpm lint
+      
+      - name: Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: pnpm release
+
