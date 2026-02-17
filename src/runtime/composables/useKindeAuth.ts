@@ -1,5 +1,5 @@
 import { computed, ref, readonly } from 'vue'
-import { navigateTo } from '#app'
+import { navigateTo, useRuntimeConfig } from '#app'
 import type { KindeUser } from '../types/index'
 
 // Singleton state - shared across all useKindeAuth() calls
@@ -43,11 +43,19 @@ export const useKindeAuth = () => {
   // Check if user is authenticated by checking for auth cookies
   const checkAuth = (): boolean => {
     if (import.meta.client) {
-      // More robust cookie check - ensure we're checking the cookie name exactly
+      // Get the cookie prefix from runtime config
+      const config = useRuntimeConfig()
+      const cookiePrefix = config.public.kindeAuth?.cookie?.prefix || ''
+
+      // Check for cookies with the configured prefix
       const cookies = document.cookie.split(';').map(c => c.trim())
-      const hasIdToken = cookies.some(c => c.startsWith('id_token=') && c.split('=')[1])
-      const hasAccessToken = cookies.some(c => c.startsWith('access_token=') && c.split('=')[1])
+      const idTokenCookieName = `${cookiePrefix}id_token`
+      const accessTokenCookieName = `${cookiePrefix}access_token`
+
+      const hasIdToken = cookies.some(c => c.startsWith(`${idTokenCookieName}=`) && c.split('=')[1])
+      const hasAccessToken = cookies.some(c => c.startsWith(`${accessTokenCookieName}=`) && c.split('=')[1])
       const authenticated = hasIdToken || hasAccessToken
+
       isAuthenticated.value = authenticated
       return authenticated
     }
@@ -147,7 +155,11 @@ export const useKindeAuth = () => {
     isAuthenticated.value = false
 
     if (import.meta.client) {
-      // Clear all Kinde-related cookies
+      // Get the cookie prefix from runtime config
+      const config = useRuntimeConfig()
+      const cookiePrefix = config.public.kindeAuth?.cookie?.prefix || ''
+
+      // Clear all Kinde-related cookies (with prefix)
       const cookiesToClear = [
         'access_token',
         'refresh_token',
@@ -159,8 +171,9 @@ export const useKindeAuth = () => {
       ]
 
       cookiesToClear.forEach((cookieName) => {
-        document.cookie = `${cookieName}=; path=/; max-age=0`
-        document.cookie = `${cookieName}=; path=/api; max-age=0`
+        const fullCookieName = `${cookiePrefix}${cookieName}`
+        document.cookie = `${fullCookieName}=; path=/; max-age=0`
+        document.cookie = `${fullCookieName}=; path=/api; max-age=0`
       })
 
       // Redirect to logout endpoint

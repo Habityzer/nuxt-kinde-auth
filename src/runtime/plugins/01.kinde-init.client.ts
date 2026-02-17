@@ -24,7 +24,7 @@ export default defineNuxtPlugin({
         }
         catch (error) {
           // Silently fail - middleware and error handlers will handle redirects
-          console.debug('[nuxt-kinde-auth] Failed to fetch user on init:', error)
+          console.warn('[kinde-auth] Failed to fetch user on init:', error)
         }
       }
     }
