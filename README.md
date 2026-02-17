@@ -1,5 +1,8 @@
 # @habityzer/nuxt-kinde-auth
 
+[![npm version](https://img.shields.io/npm/v/@habityzer/nuxt-kinde-auth.svg)](https://www.npmjs.com/package/@habityzer/nuxt-kinde-auth)
+[![npm downloads](https://img.shields.io/npm/dm/@habityzer/nuxt-kinde-auth.svg)](https://www.npmjs.com/package/@habityzer/nuxt-kinde-auth)
+
 > Kinde authentication module for Nuxt 4
 
 A plug-and-play authentication module for Nuxt 4 that integrates [Kinde](https://kinde.com/) OAuth authentication with minimal setup.
