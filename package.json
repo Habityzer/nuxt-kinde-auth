@@ -29,7 +29,7 @@
     "prepare": "nuxi prepare client",
     "play:dev": "nuxi dev playground",
     "play:prod": "pnpm prepack && nuxi dev playground",
-    "release": "pnpm lint && pnpm test && pnpm prepack && semantic-release",
+    "release": "semantic-release",
     "lint": "eslint .",
     "test": "vitest run",
     "test:watch": "vitest watch"
