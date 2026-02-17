@@ -1,3 +1,10 @@
+## [1.3.5](https://github.com/Habityzer/nuxt-kinde-auth/compare/v1.3.4...v1.3.5) (2026-02-17)
+
+
+### Bug Fixes
+
+* enable npm publishing by setting npmPublish: true ([aed6974](https://github.com/Habityzer/nuxt-kinde-auth/commit/aed69745c51f1931896e85fe952617bae3d546fb))
+
 ## [1.3.4](https://github.com/Habityzer/nuxt-kinde-auth/compare/v1.3.3...v1.3.4) (2026-02-17)
 
 
