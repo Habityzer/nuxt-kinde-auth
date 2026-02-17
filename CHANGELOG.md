@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v1.3.0
+
+[compare changes](https://github.com/Habityzer/nuxt-kinde-auth/compare/v1.2.2...v1.3.0)
+
+### 🚀 Enhancements
+
+- **kinde:** Enhance authentication cookie handling with runtime config ([3d59919](https://github.com/Habityzer/nuxt-kinde-auth/commit/3d59919))
+
+### ❤️ Contributors
+
+- Vazgen Manukyan <vazgenmanukyan@cloud.upwork.com>
+
 ## v1.2.2
 
 [compare changes](https://github.com/Habityzer/nuxt-kinde-auth/compare/v1.2.1...v1.2.2)
