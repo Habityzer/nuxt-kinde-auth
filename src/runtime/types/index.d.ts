@@ -15,33 +15,33 @@ declare module '#app' {
 }
 
 interface SessionManager {
-  getSessionItem<T = unknown>(key: string): Promise<T | undefined>
-  setSessionItem<T = unknown>(key: string, value: T): Promise<void>
-  removeSessionItem(key: string): Promise<void>
+  getSessionItem<T = unknown>(_key: string): Promise<T | undefined>
+  setSessionItem<T = unknown>(_key: string, _value: T): Promise<void>
+  removeSessionItem(_key: string): Promise<void>
   destroySession(): Promise<void>
 }
 
 interface KindeClient {
-  createOrg: (sessionManager: SessionManager, options?: any) => Promise<any>
-  getBooleanFlag: (sessionManager: SessionManager, code: string, defaultValue?: boolean) => Promise<boolean>
-  getClaim: (sessionManager: SessionManager, claim: string) => Promise<any>
-  getClaimValue: (sessionManager: SessionManager, claim: string) => Promise<any>
-  getFlag: (sessionManager: SessionManager, code: string, defaultValue?: any) => Promise<any>
-  getIntegerFlag: (sessionManager: SessionManager, code: string, defaultValue?: number) => Promise<number>
-  getOrganization: (sessionManager: SessionManager) => Promise<any>
-  getPermission: (sessionManager: SessionManager, permission: string) => Promise<any>
-  getPermissions: (sessionManager: SessionManager) => Promise<any>
-  getStringFlag: (sessionManager: SessionManager, code: string, defaultValue?: string) => Promise<string>
-  getToken: (sessionManager: SessionManager) => Promise<string>
-  getUser: (sessionManager: SessionManager) => Promise<KindeUser>
-  getUserOrganizations: (sessionManager: SessionManager) => Promise<any>
-  getUserProfile: (sessionManager: SessionManager) => Promise<any>
-  handleRedirectToApp: (sessionManager: SessionManager, url: URL) => Promise<void>
-  isAuthenticated: (sessionManager: SessionManager) => Promise<boolean>
-  login: (sessionManager: SessionManager, options?: any) => Promise<URL>
-  logout: (sessionManager: SessionManager) => Promise<URL>
-  refreshTokens: (sessionManager: SessionManager) => Promise<void>
-  register: (sessionManager: SessionManager, options?: any) => Promise<URL>
+  createOrg: (_sessionManager: SessionManager, _options?: any) => Promise<any>
+  getBooleanFlag: (_sessionManager: SessionManager, _code: string, _defaultValue?: boolean) => Promise<boolean>
+  getClaim: (_sessionManager: SessionManager, _claim: string) => Promise<any>
+  getClaimValue: (_sessionManager: SessionManager, _claim: string) => Promise<any>
+  getFlag: (_sessionManager: SessionManager, _code: string, _defaultValue?: any) => Promise<any>
+  getIntegerFlag: (_sessionManager: SessionManager, _code: string, _defaultValue?: number) => Promise<number>
+  getOrganization: (_sessionManager: SessionManager) => Promise<any>
+  getPermission: (_sessionManager: SessionManager, _permission: string) => Promise<any>
+  getPermissions: (_sessionManager: SessionManager) => Promise<any>
+  getStringFlag: (_sessionManager: SessionManager, _code: string, _defaultValue?: string) => Promise<string>
+  getToken: (_sessionManager: SessionManager) => Promise<string>
+  getUser: (_sessionManager: SessionManager) => Promise<KindeUser>
+  getUserOrganizations: (_sessionManager: SessionManager) => Promise<any>
+  getUserProfile: (_sessionManager: SessionManager) => Promise<any>
+  handleRedirectToApp: (_sessionManager: SessionManager, _url: URL) => Promise<void>
+  isAuthenticated: (_sessionManager: SessionManager) => Promise<boolean>
+  login: (_sessionManager: SessionManager, _options?: any) => Promise<URL>
+  logout: (_sessionManager: SessionManager) => Promise<URL>
+  refreshTokens: (_sessionManager: SessionManager) => Promise<void>
+  register: (_sessionManager: SessionManager, _options?: any) => Promise<URL>
 }
 
 declare module 'h3' {

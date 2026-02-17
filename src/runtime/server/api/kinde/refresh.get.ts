@@ -17,7 +17,7 @@ export default defineEventHandler(async (event) => {
 
   try {
     // Check if we have a refresh token
-    const refreshToken = await sessionManager.getSessionItem<string>('refresh_token')
+    const refreshToken = await sessionManager.getSessionItem <string> ('refresh_token')
 
     if (!refreshToken) {
       throw createError({

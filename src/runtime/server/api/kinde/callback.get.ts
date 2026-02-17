@@ -21,7 +21,7 @@ export default defineEventHandler(async (event) => {
     await client.handleRedirectToApp(sessionManager, callbackUrl)
 
     // Get the post-login redirect URL
-    const postLoginRedirectURL = await sessionManager.getSessionItem<string>('post-login-redirect-url')
+    const postLoginRedirectURL = await sessionManager.getSessionItem <string> ('post-login-redirect-url')
 
     if (postLoginRedirectURL && typeof postLoginRedirectURL === 'string') {
       // Clear the stored redirect URL
