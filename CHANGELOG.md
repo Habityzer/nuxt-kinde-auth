@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v1.3.1
+
+[compare changes](https://github.com/Habityzer/nuxt-kinde-auth/compare/v1.3.0...v1.3.1)
+
+### 🏡 Chore
+
+- Update ESLint configuration and dependencies ([1fe0d44](https://github.com/Habityzer/nuxt-kinde-auth/commit/1fe0d44))
+
+### ❤️ Contributors
+
+- Vazgen Manukyan <vazgenmanukyan@cloud.upwork.com>
+
 ## v1.3.0
 
 [compare changes](https://github.com/Habityzer/nuxt-kinde-auth/compare/v1.2.2...v1.3.0)
