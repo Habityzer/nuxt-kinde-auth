@@ -1,3 +1,10 @@
+## [1.3.4](https://github.com/Habityzer/nuxt-kinde-auth/compare/v1.3.3...v1.3.4) (2026-02-17)
+
+
+### Bug Fixes
+
+* ensure npm publishing in semantic-release workflow ([c060c21](https://github.com/Habityzer/nuxt-kinde-auth/commit/c060c2145b24196764f3656466d78aadad740b47))
+
 ## [1.3.3](https://github.com/Habityzer/nuxt-kinde-auth/compare/v1.3.2...v1.3.3) (2026-02-17)
 
 
