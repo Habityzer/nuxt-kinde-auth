@@ -11,13 +11,23 @@ function getKindeClient(event: H3Event) {
   if (_kindeClient) return _kindeClient
 
   const config = useRuntimeConfig(event)
-  _kindeClient = createKindeServerClient(GrantType.AUTHORIZATION_CODE, {
+  const hasClientSecret = typeof config.kinde.clientSecret === 'string' && config.kinde.clientSecret.trim().length > 0
+  const baseOptions = {
     authDomain: config.kinde.authDomain,
     clientId: config.kinde.clientId,
-    clientSecret: config.kinde.clientSecret,
     redirectURL: config.kinde.redirectURL,
     logoutRedirectURL: config.kinde.logoutRedirectURL,
-  })
+  }
+
+  if (hasClientSecret) {
+    _kindeClient = createKindeServerClient(GrantType.AUTHORIZATION_CODE, {
+      ...baseOptions,
+      clientSecret: config.kinde.clientSecret,
+    })
+  }
+  else {
+    _kindeClient = createKindeServerClient(GrantType.PKCE, baseOptions)
+  }
 
   return _kindeClient
 }
@@ -34,6 +44,11 @@ export default defineEventHandler(async (event) => {
 
 async function createSessionManager(event: H3Event) {
   const keysInCookie = ['refresh_token', 'access_token', 'id_token', 'ac-state-key', 'post-login-redirect-url']
+  // PKCE flow stores code verifier under acwpf-state-key-<state>; must persist across redirect
+  const PKCE_COOKIE_PREFIX = 'acwpf-state-key'
+  const persistKeyToCookie = (key: string) =>
+    keysInCookie.includes(key) || key.startsWith(PKCE_COOKIE_PREFIX)
+
   const memorySession: Record<string, any> = {}
   const config = useRuntimeConfig(event)
   const cookiePrefix = config.kinde.cookie.prefix || ''
@@ -47,7 +62,7 @@ async function createSessionManager(event: H3Event) {
   return {
     async getSessionItem<T = unknown>(itemKey: string): Promise<T | undefined> {
       let value
-      if (keysInCookie.includes(itemKey)) {
+      if (persistKeyToCookie(itemKey)) {
         // First check if we set this cookie during the current request
         if (cookieCache[itemKey] !== undefined) {
           value = cookieCache[itemKey]
@@ -64,7 +79,7 @@ async function createSessionManager(event: H3Event) {
     },
     async setSessionItem<T = unknown>(itemKey: string, itemValue: T): Promise<void> {
       const stringValue = typeof itemValue === 'string' ? itemValue : JSON.stringify(itemValue)
-      if (keysInCookie.includes(itemKey)) {
+      if (persistKeyToCookie(itemKey)) {
         // Store in cache so it's available immediately in the same request
         cookieCache[itemKey] = stringValue
 
@@ -85,7 +100,7 @@ async function createSessionManager(event: H3Event) {
       }
     },
     async removeSessionItem(itemKey: string) {
-      if (keysInCookie.includes(itemKey)) {
+      if (persistKeyToCookie(itemKey)) {
         delete cookieCache[itemKey]
         // Delete by setting empty value with expires in the past
         setCookie(event, getPrefixedName(itemKey), '', {
@@ -106,7 +121,6 @@ async function createSessionManager(event: H3Event) {
       }
       for (const key of keysInCookie) {
         delete cookieCache[key]
-        // Delete by setting empty value with expires in the past
         setCookie(event, getPrefixedName(key), '', {
           path: config.kinde.cookie.path,
           httpOnly: config.kinde.cookie.httpOnly,
@@ -115,6 +129,7 @@ async function createSessionManager(event: H3Event) {
           expires: new Date(0),
         })
       }
+      // PKCE code verifier cookies (acwpf-state-key-*) are one-time use; cleared in callback after token exchange
     },
   }
 }

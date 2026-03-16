@@ -47,9 +47,7 @@ export default defineNuxtModule<ModuleOptions>({
       if (!options.clientId) {
         throw new Error('[@habityzer/nuxt-kinde-auth] clientId is required. Please set it in your nuxt.config.ts')
       }
-      if (!options.clientSecret) {
-        throw new Error('[@habityzer/nuxt-kinde-auth] clientSecret is required. Please set it in your nuxt.config.ts')
-      }
+      // clientSecret is optional for Frontend/PKCE apps (no secret)
     }
     else {
       // Use dummy values for tests if not provided
@@ -179,7 +177,7 @@ declare module '@nuxt/schema' {
     kinde: {
       authDomain: string
       clientId: string
-      clientSecret: string
+      clientSecret?: string
       redirectURL: string
       logoutRedirectURL: string
       postLoginRedirectURL: string
