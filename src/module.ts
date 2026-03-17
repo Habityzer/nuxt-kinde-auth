@@ -54,6 +54,8 @@ export default defineNuxtModule<ModuleOptions>({
       options.authDomain = options.authDomain || 'https://test.kinde.com'
       options.clientId = options.clientId || 'test-client-id'
       options.clientSecret = options.clientSecret || 'test-client-secret'
+      // Disable debug in test so the debug plugin is not registered (avoids noisy logs)
+      options.debug = { ...options.debug, enabled: false }
     }
 
     // Add runtime config
