@@ -1,3 +1,10 @@
+## [1.4.1](https://github.com/Habityzer/nuxt-kinde-auth/compare/v1.4.0...v1.4.1) (2026-03-17)
+
+
+### Bug Fixes
+
+* Debug configuratin ([a8844c0](https://github.com/Habityzer/nuxt-kinde-auth/commit/a8844c0b4b30e87744f66f93a5b9f80f6482fcaf))
+
 # [1.4.0](https://github.com/Habityzer/nuxt-kinde-auth/compare/v1.3.5...v1.4.0) (2026-03-16)
 
 
