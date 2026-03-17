@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/Habityzer/nuxt-kinde-auth/compare/v1.3.5...v1.4.0) (2026-03-16)
+
+
+### Features
+
+* Add support from native login ([58e0115](https://github.com/Habityzer/nuxt-kinde-auth/commit/58e011514947a844b81fb860d9f20aecee0a1474))
+
 ## [1.3.5](https://github.com/Habityzer/nuxt-kinde-auth/compare/v1.3.4...v1.3.5) (2026-02-17)
 
 
