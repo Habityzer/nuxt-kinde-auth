@@ -1,3 +1,10 @@
+## [1.4.2](https://github.com/Habityzer/nuxt-kinde-auth/compare/v1.4.1...v1.4.2) (2026-03-20)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @nuxt/devtools-kit to v3 ([7c7ecb6](https://github.com/Habityzer/nuxt-kinde-auth/commit/7c7ecb6e4052ef3e63c9ebe1cdf890b6ed68bf83))
+
 ## [1.4.1](https://github.com/Habityzer/nuxt-kinde-auth/compare/v1.4.0...v1.4.1) (2026-03-17)
 
 
