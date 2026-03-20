@@ -590,6 +590,10 @@ If you have an existing Kinde integration:
 
 MIT
 
+## Releases
+
+Versioning and npm publishes run in **GitHub Actions** when changes are pushed to `main` or `master` (see `.github/workflows/publish.yml`). For commit conventions and npm token setup, see [SETUP_NPM_PUBLISH.md](./SETUP_NPM_PUBLISH.md).
+
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.

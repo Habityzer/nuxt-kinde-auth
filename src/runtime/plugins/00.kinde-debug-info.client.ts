@@ -1,6 +1,11 @@
 import { defineNuxtPlugin, useRuntimeConfig } from '#app'
 
 export default defineNuxtPlugin(() => {
+  // Skip in test environment to avoid noisy test output
+  if (import.meta.env.MODE === 'test' || import.meta.env.VITEST) {
+    return
+  }
+
   const config = useRuntimeConfig()
 
   // Only log in development when debug is enabled

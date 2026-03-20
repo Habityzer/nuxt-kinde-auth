@@ -1,5 +1,5 @@
 {
-  "branches": ["master"],
+  "branches": ["main", "master"],
   "repositoryUrl": "git@github.com:Habityzer/nuxt-kinde-auth.git",
   "plugins": [
     [
@@ -47,8 +47,6 @@
         "assets": []
       }
     ]
-  ],
-  "dryRun": false,
-  "ci": false
+  ]
 }
 
