@@ -1,6 +1,6 @@
 # Setting Up Automated NPM Publishing
 
-This project uses GitHub Actions with semantic-release to automatically publish to npm when you push to the `master` branch.
+This project uses GitHub Actions with [semantic-release](https://semantic-release.gitbook.io/) (via [`cycjimmy/semantic-release-action@v6`](https://github.com/cycjimmy/semantic-release-action)) to automatically publish to npm when you push to **`main`** or **`master`**.
 
 ## Setup Instructions
 
@@ -40,7 +40,7 @@ npm token create --type automation --scope @habityzer
 
 The workflow (`.github/workflows/publish.yml`) will:
 
-1. **Trigger**: Automatically runs when you push to the `master` branch
+1. **Trigger**: Automatically runs when you push to **`main`** or **`master`**
 2. **Analyze**: Semantic-release reads your commit messages (following conventional commits)
 3. **Version**: Automatically bumps the version based on your commits:
    - `feat:` → minor version (1.0.0 → 1.1.0)
@@ -50,6 +50,8 @@ The workflow (`.github/workflows/publish.yml`) will:
 5. **Git Tag**: Creates a git tag for the new version
 6. **Publish**: Publishes to npm
 7. **Commit**: Commits the changelog and version bump back to your repo
+
+Releases run only in CI (not via a local `pnpm release` script).
 
 ### 4. Commit Message Format
 
@@ -71,19 +73,6 @@ BREAKING CHANGE: API structure has changed"
 git commit -m "docs: update README"
 git commit -m "chore: update dependencies"
 ```
-
-### 5. Manual Release (Optional)
-
-If you prefer to release manually:
-
-```bash
-pnpm release
-```
-
-This runs semantic-release locally. Make sure you have:
-- `NPM_TOKEN` environment variable set
-- Committed all your changes
-- Pushed to the master branch
 
 ## Troubleshooting
 
@@ -109,7 +98,7 @@ This runs semantic-release locally. Make sure you have:
 
 ## Current Configuration
 
-- **Branch**: `master` (configured in `.releaserc.json`)
+- **Branches**: `main` and `master` (see `.releaserc.json` and `.github/workflows/publish.yml` `on.push.branches`)
 - **Package**: `@habityzer/nuxt-kinde-auth`
 - **Workflow**: `.github/workflows/publish.yml`
 - **NPM Publish**: Enabled (set in `.releaserc.json`)

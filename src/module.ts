@@ -36,8 +36,8 @@ export default defineNuxtModule<ModuleOptions>({
   setup(options, nuxt) {
     const resolver = createResolver(import.meta.url)
 
-    // Skip validation in test environment
-    const isTestEnv = process.env.NODE_ENV === 'test' || process.env.VITEST === 'true'
+    // Skip validation and debug in test environment
+    const isTestEnv = process.env.NODE_ENV === 'test' || process.env.VITEST === 'true' || process.env.NUXT_TEST_MODE === 'true'
 
     if (!isTestEnv) {
       // Validate required options (only in non-test environments)
