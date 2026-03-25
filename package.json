@@ -52,7 +52,7 @@
     "changelogen": "^0.6.2",
     "eslint": "^10.0.0",
     "nuxt": "^4.1.3",
-    "typescript": "^5.9.3",
+    "typescript": "^6.0.0",
     "vitest": "^4.0.0"
   }
 }
